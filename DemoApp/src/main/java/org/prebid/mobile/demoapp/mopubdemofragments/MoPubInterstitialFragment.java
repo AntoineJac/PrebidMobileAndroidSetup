@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubInterstitial;
 
+import org.prebid.mobile.core.Prebid;
 import org.prebid.mobile.demoapp.Constants;
 import org.prebid.mobile.demoapp.R;
 
@@ -40,8 +41,10 @@ public class MoPubInterstitialFragment extends Fragment implements MoPubIntersti
     }
 
     public void loadInterstitial(View view) {
+        Prebid.attachBids(interstitialAdView, Constants.INTERSTITIAL_FULLSCREEN, getContext());
         interstitialAdView.setInterstitialAdListener(this);
         interstitialAdView.load();
+        Prebid.detachUsedBid(interstitialAdView);
     }
 
     @Override

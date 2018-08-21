@@ -13,10 +13,11 @@ import android.widget.FrameLayout;
 import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubView;
 
+import org.prebid.mobile.core.Prebid;
 import org.prebid.mobile.demoapp.Constants;
 import org.prebid.mobile.demoapp.R;
 
-public class MoPubBannerFragment extends Fragment implements MoPubView.BannerAdListener {
+public class MoPubBannerFragment extends Fragment implements MoPubView.BannerAdListener, Prebid.OnAttachCompleteListener {
 
     private MoPubView adView;
     private MoPubView adView2;
@@ -51,6 +52,7 @@ public class MoPubBannerFragment extends Fragment implements MoPubView.BannerAdL
         adView.setMinimumHeight(50);
         adView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.CENTER_HORIZONTAL));
         adFrame.addView(adView);
+        Prebid.attachBids(adView, Constants.BANNER_320x50, this.getActivity());
         adView.loadAd();
     }
 
@@ -68,6 +70,9 @@ public class MoPubBannerFragment extends Fragment implements MoPubView.BannerAdL
         lp.gravity = Gravity.CENTER;
         adView2.setLayoutParams(lp);
         adFrame.addView(adView2);
+        //region Prebid API usage
+        Prebid.attachBidsWhenReady(adView2, Constants.BANNER_300x250, this, waitTime, this.getActivity());
+        //endregion
 
     }
 
@@ -79,6 +84,13 @@ public class MoPubBannerFragment extends Fragment implements MoPubView.BannerAdL
         if (adView2 != null) {
             adView2.destroy();
             setupBannerWithWait(500);
+        }
+    }
+
+    @Override
+    public void onAttachComplete(Object adObj) {
+        if (adObj != null && adObj instanceof MoPubView) {
+            ((MoPubView) adObj).loadAd();
         }
     }
 

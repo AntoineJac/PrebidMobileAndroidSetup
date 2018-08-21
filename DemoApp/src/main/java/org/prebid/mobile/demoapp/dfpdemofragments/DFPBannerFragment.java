@@ -16,11 +16,12 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
 
+import org.prebid.mobile.core.Prebid;
 import org.prebid.mobile.demoapp.Constants;
 import org.prebid.mobile.demoapp.R;
 
 
-public class DFPBannerFragment extends Fragment {
+public class DFPBannerFragment extends Fragment implements Prebid.OnAttachCompleteListener {
     PublisherAdView adView1;
     PublisherAdView adView2;
     private View root;
@@ -89,6 +90,7 @@ public class DFPBannerFragment extends Fragment {
         //region PriceCheckForDFP API usage
         PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
         PublisherAdRequest request = builder.build();
+        Prebid.attachBids(request, Constants.BANNER_320x50, this.getActivity());
         //endregion
         adView1.loadAd(request);
     }
@@ -125,6 +127,7 @@ public class DFPBannerFragment extends Fragment {
         //region PriceCheckForDFP API usage
         PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
         PublisherAdRequest request = builder.build();
+        Prebid.attachBidsWhenReady(request, Constants.BANNER_300x250, this, waitTime, this.getActivity());
         //endregion
 
     }
@@ -140,4 +143,11 @@ public class DFPBannerFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onAttachComplete(Object adObj) {
+        if (adView2 != null && adObj != null && adObj instanceof PublisherAdRequest) {
+            adView2.loadAd((PublisherAdRequest) adObj);
+            Prebid.detachUsedBid(adObj);
+        }
+    }
 }

@@ -14,6 +14,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 
+import org.prebid.mobile.core.Prebid;
 import org.prebid.mobile.demoapp.Constants;
 import org.prebid.mobile.demoapp.R;
 
@@ -63,6 +64,8 @@ public class DFPInterstitialFragment extends Fragment {
     }
 
     public void loadInterstitial(View view) {
+        Prebid.attachBids(request, Constants.INTERSTITIAL_FULLSCREEN, getContext());
         mPublisherInterstitialAd.loadAd(request);
+        Prebid.detachUsedBid(request);
     }
 }
