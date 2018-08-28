@@ -7,6 +7,8 @@ import android.webkit.WebView;
 import org.prebid.mobile.core.AdUnit;
 import org.prebid.mobile.core.BannerAdUnit;
 import org.prebid.mobile.core.InterstitialAdUnit;
+import org.prebid.mobile.core.Prebid;
+import org.prebid.mobile.core.PrebidException;
 import org.prebid.mobile.core.TargetingParams;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import static org.prebid.mobile.demoapp.Constants.BANNER_300x250;
 import static org.prebid.mobile.demoapp.Constants.BANNER_320x50;
 import static org.prebid.mobile.demoapp.Constants.INTERSTITIAL_FULLSCREEN;
+import static org.prebid.mobile.demoapp.Constants.PBS_ACCOUNT_ID;
 import static org.prebid.mobile.demoapp.Constants.PBS_CONFIG_300x250_RUBICON_DEMAND;
 import static org.prebid.mobile.demoapp.Constants.PBS_CONFIG_RUBICON_DEMAND;
 
@@ -77,6 +80,15 @@ public class PrebidApplication extends Application {
         TargetingParams.setUserTargeting("PrebidKey2", null); // this should add "PrebidKey2" in user.keywords in ortb request
         TargetingParams.setUserTargeting(null, "PrebidValue2"); // this should add nothing
         TargetingParams.setUserTargeting(null, null); // this should add nothing
+
+        //B- Registers ad units
+        // Register ad units for prebid.
+        try {
+            // Start the initialization with DFP ad server
+            Prebid.init(getApplicationContext(), adUnits, PBS_ACCOUNT_ID, Prebid.AdServer.DFP, Prebid.Host.RUBICON);
+        } catch (PrebidException e) {
+            e.printStackTrace();
+        }
     }
 
 }
