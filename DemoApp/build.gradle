@@ -36,4 +36,7 @@ dependencies {
     compile('com.mopub:mopub-sdk:4.15.0@aar') {
         transitive = true
     }
+
+    //Prebid SDK dependency
+    compile 'org.prebid:prebid-mobile-sdk:0.4'
 }
