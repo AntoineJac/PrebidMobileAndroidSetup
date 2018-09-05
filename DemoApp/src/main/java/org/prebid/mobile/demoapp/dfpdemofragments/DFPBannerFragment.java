@@ -33,9 +33,9 @@ public class DFPBannerFragment extends Fragment implements Prebid.OnAttachComple
         super.onCreateView(inflater, container, savedInstanceState);
         root = inflater.inflate(R.layout.fragment_banner, null);
 
-        setupBannerWithoutWait();
-
-        setupBannerWithWait(500);
+//        setupBannerWithoutWait();
+//        setupBannerWithWait(500);
+        setupBigBannerWithoutWait();
 
         Button btnLoad = (Button) root.findViewById(R.id.loadBanner);
         btnLoad.setOnClickListener(new View.OnClickListener() {
@@ -132,14 +132,31 @@ public class DFPBannerFragment extends Fragment implements Prebid.OnAttachComple
 
     }
 
+    private void setupBigBannerWithoutWait() {
+        FrameLayout adFrame = (FrameLayout) root.findViewById(R.id.adFrame2);
+        adFrame.removeAllViews();
+        adView2 = new PublisherAdView(getActivity());
+        adView2.setAdUnitId(Constants.DFP_BANNER_ADUNIT_ID_300x250);
+        adView2.setAdSizes(new AdSize(300, 250));
+        adView2.setAdListener(adListener);
+        adFrame.addView(adView2);
+        //region PriceCheckForDFP API usage
+        PublisherAdRequest.Builder builder = new PublisherAdRequest.Builder();
+        PublisherAdRequest request = builder.build();
+        Prebid.attachBids(request, Constants.BANNER_300x250, this.getActivity());
+        //endregion
+        adView2.loadAd(request);
+    }
+
     public void loadBanner() {
         if (adView1 != null) {
             adView1.destroy();
-            setupBannerWithoutWait();
+//            setupBannerWithoutWait();
         }
         if (adView2 != null) {
             adView2.destroy();
-            setupBannerWithWait(500);
+//            setupBannerWithWait(500);
+            setupBigBannerWithoutWait();
         }
     }
 
