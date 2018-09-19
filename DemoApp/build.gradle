@@ -37,6 +37,6 @@ dependencies {
         transitive = true
     }
 
-    //Prebid SDK dependency
-    compile 'org.prebid:prebid-mobile-sdk:0.4'
+    //Prebid SDK dependency (use implementation compile will be depreceated soon ;) )
+    implementation 'org.prebid:prebid-mobile-sdk:0.5'
 }
